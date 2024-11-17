@@ -368,8 +368,20 @@ const ordenarEsportistas = async (campo, ordem = 'asc') => {
 
 /* ordenarEsportistas("cidade", "desc"); */
 
+const bodyParser = require('body-parser');
 const express = require('express');
 const app = express();
+app.use(express.json());
+const cors = require('cors');
+app.use(cors());
+
+
+const PORT = process.env.PORT || 8080;
+
+app.listen(PORT, () => {
+    console.log(`Servidor rodando na porta ${PORT}`);
+});
+
 
 app.get("/esportistas", async (req, res) => {
     try {
@@ -419,7 +431,10 @@ app.put("esportistas/:id", async (req, res) => {
 
 app.post("/esportistas", async (req, res) => {
     try {
+        console.log(req.body);
         const { nome, idade, sexo, cidade, esportes } = req.body;
+
+        
 
         // Verifica se todos os campos necessários foram passados
         if (!nome || !idade || !sexo || !cidade || !esportes) {
@@ -512,6 +527,7 @@ app.get("/cidades", async (req, res) => {
         res.status(500).json({ mensagem: "Erro interno no servidor!" });
     }
 });
+
 
 
 
